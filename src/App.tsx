@@ -2,9 +2,16 @@ import React from 'react';
 
 function App() {
   return (
-    <div className="App">
-      Working
-    </div>
+    <main>
+      <div className="background"></div>
+
+      <div>
+        <span>Working</span>
+      </div>
+      <div className="text-shine">
+        <span>Working</span>
+      </div>
+    </main>
   );
 }
 

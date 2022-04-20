@@ -12,7 +12,7 @@ pre {
 }
 
 body {
-  cursor: none;
+  // cursor: none;
   padding: $screen-border;
   background: $bg-color-dark;
   color: $primary;
@@ -27,8 +27,19 @@ body {
   }
 }
 
+::-webkit-scrollbar {
+  width: 10px !important;
+}
+
 main {
-  position: relative;
+  overflow: hidden;
+
+  &>div:not(.background) {
+    overflow-y: scroll;
+    position: relative;
+    margin-right: -10px;
+    height: calc(100vh - $screen-border * 2);
+  }
 }
 
 .background {

@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 function App() {
 
+  /** @const {React.RefObject<HTMLDivElement>} refContainer Reference of the container of the texts */
+  const refContainer = useRef<HTMLDivElement>(null);
+
   /** @const {React.RefObject<HTMLTextAreaElement>} refInput Reference of the input field */
   const refInput = useRef<HTMLTextAreaElement>(null);
 
@@ -31,10 +34,16 @@ function App() {
   }
 
   /**
-   * After pressing up Enter, saves a new line
-   * @param e 
+   * After pressing a key runs an action or actions
+   * @param e
    */
-  const handleKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+    // Scroll down in the container of texts
+    if (refContainer && refContainer.current) {
+      refContainer.current.scrollTo(0, refContainer.current.scrollHeight);
+    }
+
+    // Saves new line
     if (e.code.toLowerCase() === 'enter') {
       const newTexts = texts.slice();
       newTexts.push(inputText);
@@ -50,21 +59,23 @@ function App() {
     <main>
       <div className="background"></div>
 
-      <div>
-        <pre>{texts.join('')}</pre>
-        <span>{inputText}</span>
-      </div>
-      <div className="text-shine">
-        <pre>{texts.join('')}</pre>
-        <span>{inputText}</span>
-      </div>
+      <div ref={refContainer}>
+        <div>
+          <pre>{texts.join('')}</pre>
+          <span>{inputText}</span>
+        </div>
+        <div className="text-shine">
+          <pre>{texts.join('')}</pre>
+          <span>{inputText}</span>
+        </div>
 
-      <textarea 
-        ref={refInput} 
-        value={inputText}
-        onChange={handleType}
-        onKeyUp={handleKeyUp}
-      ></textarea>
+        <textarea 
+          ref={refInput} 
+          value={inputText}
+          onChange={handleType}
+          onKeyDown={handleKeyDown}
+        ></textarea>
+      </div>
     </main>
   );
 }

@@ -8,6 +8,9 @@ function App() {
   /** @const {string} inputText That typed text */
   const [inputText, setInputText] = useState<string>('');
 
+  /** @const {string[]} texts The already wrote texts */
+  const [texts, setTexts] = useState<string[]>([]);
+
   /** Prevents textarea to loose focus */
   useEffect(() => {
     if (refInput && refInput.current) {
@@ -27,6 +30,20 @@ function App() {
     setInputText(e.target.value);
   }
 
+  /**
+   * After pressing up Enter, saves a new line
+   * @param e 
+   */
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+    if (e.code.toLowerCase() === 'enter') {
+      const newTexts = texts.slice();
+      newTexts.push(inputText);
+      setTexts(newTexts);
+
+      setInputText('');
+    }
+  }
+
   // -----------------------------------------
 
   return (
@@ -34,13 +51,20 @@ function App() {
       <div className="background"></div>
 
       <div>
+        <pre>{texts.join('')}</pre>
         <span>{inputText}</span>
       </div>
       <div className="text-shine">
+        <pre>{texts.join('')}</pre>
         <span>{inputText}</span>
       </div>
 
-      <textarea ref={refInput} onChange={handleType}></textarea>
+      <textarea 
+        ref={refInput} 
+        value={inputText}
+        onChange={handleType}
+        onKeyUp={handleKeyUp}
+      ></textarea>
     </main>
   );
 }
